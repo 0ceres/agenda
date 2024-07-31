@@ -1,7 +1,9 @@
 <template>
     <div>
       <h1>{{ title }}</h1>
-      <
+      <div class="filtro">
+            Filtro: <input type="search" v-model="textoBusar">
+      </div>
       <table>
         <thead>
             <tr>
@@ -26,7 +28,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(contacto, index) in contactos" :key="contacto.id">
+            <tr v-for="(contacto, index) in listaContactosComputada" :key="contacto.id">
                 <td>{{ contacto.id }}</td>
                 <td>{{ contacto.name }}</td>
                 <td>{{ contacto.email }}</td>
@@ -44,13 +46,14 @@
     </div>
   </template>
   
-  <script>
+<script>
   export default {
     name: 'MiComponente',
     data() {
       return {
         title: 'Agenda Telefónica',
-        indexEditing: null,        
+        textoBusar: '',
+        indexEditing: null,
         contactoObj: {
             id: 0,
             name: "",
@@ -143,6 +146,9 @@
     },
     computed: {
       // propiedades computadas que dependen de otras propiedades reactivas
+      listaContactosComputada(){
+            return this.contactos.filter(item => item.name.toLowerCase().includes(this.textoBusar.toLowerCase())||item.email.toLowerCase().includes(this.textoBusar.toLowerCase()));
+        }
     },
     props: {
       // propiedades que el componente puede recibir.
